@@ -1,0 +1,2 @@
+# Per-file options for tools/mkpack.py. The star is flat art: no dithering.
+icons/star.png   no-dither

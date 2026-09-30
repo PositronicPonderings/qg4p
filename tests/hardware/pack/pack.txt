@@ -1,0 +1,4 @@
+# Per-file options for tools/mkpack.py (see the top of that script).
+# Flat art and pixel art look sharper, and compress better, without dithering.
+dice/d20.png      no-dither
+items/potion.png  no-dither

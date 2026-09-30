@@ -1,0 +1,1 @@
+This note came from the asset pack. Edit note.txt, rebuild the pack, drag it on, and this text changes. The program itself stays exactly as it was.

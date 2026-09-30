@@ -1,0 +1,69 @@
+{
+  "//": [
+    "QG4P: 'Load a program' task for VS Code. Pick any example or hardware test",
+    "from a list; it compiles and loads it WITHOUT pressing BOOTSEL (picotool -f",
+    "reboots a running QG4P program into BOOTSEL over USB). Needs a QG4P program",
+    "(or anything with USB serial) already running; the very first load still",
+    "needs the button.",
+    "",
+    "HOW TO ADD IT: copy the object in 'tasks' into the 'tasks' list of your",
+    ".vscode/tasks.json, and the object in 'inputs' into its 'inputs' list",
+    "(create 'inputs' next to 'tasks' if it isn't there). Then set 'command' to",
+    "the picotool path used by the extension's own 'Run Project' task in that",
+    "same file (it looks like ${userHome}/.pico-sdk/picotool/<version>/picotool/picotool).",
+    "Run it with Terminal > Run Task... > QG4P: Load a program.",
+    "'dependsOn' names the extension's 'Compile Project' task; if yours is",
+    "called something else, change it or delete that line."
+  ],
+  "tasks": [
+    {
+      "label": "QG4P: Load a program",
+      "type": "process",
+      "command": "${userHome}/.pico-sdk/picotool/2.1.1/picotool/picotool",
+      "args": [
+        "load",
+        "-f",
+        "-x",
+        "${workspaceFolder}/build/${input:qg4pProgram}.uf2"
+      ],
+      "dependsOn": "Compile Project",
+      "problemMatcher": []
+    }
+  ],
+  "inputs": [
+    {
+      "id": "qg4pProgram",
+      "type": "pickString",
+      "description": "Which program?",
+      "options": [
+        "examples/qg4p_hello",
+        "examples/qg4p_shapes",
+        "examples/qg4p_text",
+        "examples/qg4p_layout",
+        "examples/qg4p_images",
+        "examples/qg4p_two_screens",
+        "examples/qg4p_asset_pack",
+        "examples/qg4p_animation_direct",
+        "examples/qg4p_framebuffer",
+        "examples/qg4p_palette_effects",
+        "examples/qg4p_paint",
+        "examples/qg4p_sprites",
+        "examples/qg4p_dashboard",
+        "examples/qg4p_dice_roller",
+        "examples/qg4p_colour_check",
+        "examples/qg4p_calibrate",
+        "tests/hardware/qg4p_m0",
+        "tests/hardware/qg4p_m1",
+        "tests/hardware/qg4p_m2",
+        "tests/hardware/qg4p_m3",
+        "tests/hardware/qg4p_m4",
+        "tests/hardware/qg4p_m5",
+        "tests/hardware/qg4p_m6",
+        "tests/hardware/qg4p_m7",
+        "tests/hardware/qg4p_m8",
+        "tests/hardware/qg4p_new_commands"
+      ],
+      "default": "examples/qg4p_hello"
+    }
+  ]
+}
