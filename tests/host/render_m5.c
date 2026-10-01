@@ -25,9 +25,9 @@ void qg_screen_set_colors(qg_screen_t *s, qg_color_t fg, qg_color_t bg){ if(fg<=
 #undef printf
 static void mk(qg_screen_t*s,int w,int h){ memset(s,0,sizeof *s); s->width=w;s->height=h; qg_view_reset(s); { static qg_text_line_t qg_hist_pool[4][QG_TEXT_HISTORY_LINES]; static const void *qg_hist_owner[4]; int k_ = 0; while (k_ < 3 && qg_hist_owner[k_] && qg_hist_owner[k_] != (const void *)(s)) k_++; qg_hist_owner[k_] = (s); (s)->hist = qg_hist_pool[k_]; (s)->hist_cap = QG_TEXT_HISTORY_LINES; }s->ready=true;s->backend=&tb;s->fg_color=QG_WHITE;s->bg_color=QG_BLACK;s->line_width=1;s->text_bg=QG_TRANSPARENT; s->tab_width=QG_TAB_WIDTH; s->wrap=true; s->scroll=true; qg_palette_copy_standard(s->palette);}
 static void dump(const char*name,int k,int w,int h){FILE*f=fopen(name,"wb");fprintf(f,"P6 %d %d 255\n",w,h);for(int j=0;j<h;j++)fwrite(fb[k][j],3,w,f);fclose(f);}
-static void both(void(*fn)(qg_screen_t*),const char*n){char b[32]; fn(&scr_a); fn(&scr_b); sprintf(b,"%s_dm.ppm",n); dump(b,0,240,320); sprintf(b,"%s_pl.ppm",n); dump(b,1,320,480);}
+static void both(void(*fn)(qg_screen_t*),const char*n){char b[32]; fn(&scr_a); fn(&scr_b); sprintf(b,"%s_a.ppm",n); dump(b,0,240,320); sprintf(b,"%s_b.ppm",n); dump(b,1,320,480);}
 int main(void){ mk(&scr_a,240,320); mk(&scr_b,320,480);
  for(int i=0;i<2;i++){ qg_screen_set_font(screens[i],0,&f_body); qg_screen_set_font(screens[i],1,&f_title); qg_screen_set_font(screens[i],2,&f_mono);}
  both(page_markup,"q1"); both(page_wrap,"q2"); both(page_tabs,"q3");
- page_scroll(&scr_a,"DM"); page_scroll(&scr_b,"P"); dump("q4_dm.ppm",0,240,320); dump("q4_pl.ppm",1,320,480);
- fprintf(stderr,"out-of-bounds=%ld  sends dm=%ld pl=%ld\n",oob,sends[0],sends[1]); return 0;}
+ page_scroll(&scr_a,"A"); page_scroll(&scr_b,"B"); dump("q4_a.ppm",0,240,320); dump("q4_b.ppm",1,320,480);
+ fprintf(stderr,"out-of-bounds=%ld  sends a=%ld b=%ld\n",oob,sends[0],sends[1]); return 0;}

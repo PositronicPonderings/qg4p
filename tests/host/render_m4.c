@@ -27,7 +27,7 @@ static void mk(qg_screen_t*s,int w,int h){ s->width=w;s->height=h; qg_view_reset
 static void dump(const char*name,int k,int w,int h){FILE*f=fopen(name,"wb");fprintf(f,"P6 %d %d 255\n",w,h);for(int j=0;j<h;j++)fwrite(fb[k][j],3,w,f);fclose(f);}
 int main(void){ mk(&scr_a,240,320); mk(&scr_b,320,480);
  for(int i=0;i<2;i++) qg_screen_set_font(screens[i],0,&f_sans);
- page_fonts(&scr_a); page_fonts(&scr_b); dump("p1_dm.ppm",0,240,320); dump("p1_pl.ppm",1,320,480);
- page_opaque(&scr_a,"DM"); page_opaque(&scr_b,"P"); dump("p2_dm.ppm",0,240,320); dump("p2_pl.ppm",1,320,480);
- page_cursor(&scr_a); page_cursor(&scr_b); dump("p3_dm.ppm",0,240,320); dump("p3_pl.ppm",1,320,480);
+ page_fonts(&scr_a); page_fonts(&scr_b); dump("p1_a.ppm",0,240,320); dump("p1_b.ppm",1,320,480);
+ page_opaque(&scr_a,"A"); page_opaque(&scr_b,"B"); dump("p2_a.ppm",0,240,320); dump("p2_b.ppm",1,320,480);
+ page_cursor(&scr_a); page_cursor(&scr_b); dump("p3_a.ppm",0,240,320); dump("p3_b.ppm",1,320,480);
  fprintf(stderr,"out-of-bounds=%ld\n",oob); return 0;}

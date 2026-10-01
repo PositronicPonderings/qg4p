@@ -27,7 +27,7 @@ static void mk(qg_screen_t*s,int w,int h){ s->width=w;s->height=h; qg_view_reset
 static void dump(const char*name,int k,int w,int h){FILE*f=fopen(name,"wb");fprintf(f,"P6 %d %d 255\n",w,h);for(int j=0;j<h;j++)fwrite(fb[k][j],3,w,f);fclose(f);}
 int main(void){ mk(&scr_a,240,320); mk(&scr_b,320,480);
  for(int rot=0;rot<=1;rot++){ memset(fb,0,sizeof fb); for(int i=0;i<2;i++){qg_screen_set_rotation(screens[i],rot?QG_ROT_90:QG_ROT_0); draw_layout(screens[i]);}
-   char b[40]; sprintf(b,"l%d_dm.ppm",rot); dump(b,0,scr_a.width,scr_a.height); sprintf(b,"l%d_pl.ppm",rot); dump(b,1,scr_b.width,scr_b.height);}
+   char b[40]; sprintf(b,"l%d_a.ppm",rot); dump(b,0,scr_a.width,scr_a.height); sprintf(b,"l%d_b.ppm",rot); dump(b,1,scr_b.width,scr_b.height);}
  for(int i=0;i<2;i++) qg_screen_set_rotation(screens[i],QG_ROT_0);
- memset(fb,0,sizeof fb); page_dial(); dump("dial_dm.ppm",0,240,320); dump("dial_pl.ppm",1,320,480);
+ memset(fb,0,sizeof fb); page_dial(); dump("dial_a.ppm",0,240,320); dump("dial_b.ppm",1,320,480);
  return 0;}

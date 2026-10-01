@@ -28,6 +28,6 @@ int main(void){ mk(&scr_a,240,320); mk(&scr_b,320,480);
  qg_image_open(&potion,img_potion,img_potion_size,QG_IMAGE_TRANSPARENT); qg_image_open(&banner,img_banner,img_banner_size,0); qg_image_open(&landscape,img_landscape,img_landscape_size,0);
  for(int i=0;i<2;i++) qg_screen_set_font(screens[i],0,&f_body);
  void (*pg[3])(qg_screen_t*)={page_one_to_one,page_scaling,page_fit};
- for(int p=0;p<3;p++){ char b[32]; pg[p](&scr_a); pg[p](&scr_b); sprintf(b,"r%d_dm.ppm",p+1); dump(b,0,240,320); sprintf(b,"r%d_pl.ppm",p+1); dump(b,1,320,480);}
- page_speed(&scr_a,"DM"); page_speed(&scr_b,"P"); dump("r4_dm.ppm",0,240,320); dump("r4_pl.ppm",1,320,480);
+ for(int p=0;p<3;p++){ char b[32]; pg[p](&scr_a); pg[p](&scr_b); sprintf(b,"r%d_a.ppm",p+1); dump(b,0,240,320); sprintf(b,"r%d_b.ppm",p+1); dump(b,1,320,480);}
+ page_speed(&scr_a,"A"); page_speed(&scr_b,"B"); dump("r4_a.ppm",0,240,320); dump("r4_b.ppm",1,320,480);
  fprintf(stderr,"out-of-bounds=%ld\n",oob); return 0;}

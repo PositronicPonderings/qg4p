@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.0.1 (2026-10-01)
+
+### Fixed
+- `docs/WIRING.md`: the screens are screen A and screen B (not "DM" and "player"), the setting for screen B's board is `SCREEN_B_BOARD` (was `PLAYER_BOARD`), and the guide no longer refers to the development chats ("your photo", "your POC"); it now gives general power and jumper advice.
+- Host tests: internal file names and labels now use A/B. No drawing changed: every fingerprint still matches.
 ## 1.0.0 (2026-09-30)
 
 The first public release.

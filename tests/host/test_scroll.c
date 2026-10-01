@@ -26,7 +26,7 @@ static void mk(qg_screen_t*s,int w,int h,const qg_backend_t*b){ memset(s,0,sizeo
 static int total_diff = 0;
 int main(void){
  int dims[2][2]={{240,320},{320,480}};
- for(int dm=0; dm<2; dm++) for(int bg=0; bg<2; bg++){ SW=dims[dm][0]; SHH=dims[dm][1];
+ for(int k=0; k<2; k++) for(int bg=0; bg<2; bg++){ SW=dims[k][0]; SHH=dims[k][1];
   memset(fbA,0,sizeof fbA); memset(fbB,0,sizeof fbB);
   mk(&scr_a,SW,SHH,&ta); rng_state=2024; if(bg){ scr_a.text_bg=QG_BLACK; }
   /* page_scroll calls fresh() which resets text_bg; replicate it inline */

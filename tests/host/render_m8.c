@@ -38,9 +38,9 @@ int main(void){ demo_setup_ex("",fb_b,sizeof fb_b);
  for(int i=0;i<2;i++){ qg_screen_set_font(screens[i],0,&f_body); qg_screen_set_font(screens[i],1,&f_title); qg_screen_set_font(screens[i],2,&f_mono);}
  qg_image_open(&d20,img_d20,img_d20_size,QG_IMAGE_TRANSPARENT); qg_image_open(&landscape,img_landscape,img_landscape_size,0);
  qg_screen_flush_all(&scr_b);
- page_flicker(); dump("t1_dm.ppm",0); dump("t1_pl.ppm",1);
- page_full_scene(); dump("t2_dm.ppm",0); dump("t2_pl.ppm",1);
- page_paint(); dump("t3_dm.ppm",0); dump("t3_pl.ppm",1);
- page_palette(); dump("t4_dm.ppm",0); dump("t4_pl.ppm",1);
- page_scroll(); dump("t5_dm.ppm",0); dump("t5_pl.ppm",1);
+ page_flicker(); dump("t1_a.ppm",0); dump("t1_b.ppm",1);
+ page_full_scene(); dump("t2_a.ppm",0); dump("t2_b.ppm",1);
+ page_paint(); dump("t3_a.ppm",0); dump("t3_b.ppm",1);
+ page_palette(); dump("t4_a.ppm",0); dump("t4_b.ppm",1);
+ page_scroll(); dump("t5_a.ppm",0); dump("t5_b.ppm",1);
  fprintf(stderr,"out-of-bounds=%ld\n",oob); return 0;}
