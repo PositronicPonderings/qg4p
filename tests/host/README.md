@@ -18,7 +18,7 @@ Needs gcc, Python 3, Pillow and numpy. Each check prints PASS or FAIL; logs are 
 | asset_pack | Lookups, alignment, checksum, damage handling |
 | buf8_* | Framebuffer screens draw exactly what direct screens do; flushes send only what changed; flood fill; scrolling; images; overlapping sprites |
 | render_pages | Every page of every hardware test program renders with nothing drawn off-screen |
-| render_examples | All 14 examples run unchanged against stand-in screens (`render_example.c`), each stopped at a representative moment (the dice roller also mid-roll, where leftover dice would show), with nothing drawn off-screen |
+| render_examples | All 16 examples run unchanged against stand-in screens (`render_example.c`), each stopped at a representative moment (the dice roller also mid-roll, where leftover dice would show), with nothing drawn off-screen |
 | manual_examples | Every example in the manual (`docs/manual`) compiles, and runs without drawing off the screen. `python3 tests/host/doc_examples.py` (without `--check`) also refreshes the manual's pictures |
 | manual_links | Every link and picture in the documentation points at a file that exists, and every `#anchor` at a real heading |
 | ai_disclosure | Every source file carries an `SPDX-AI-Disclosure` tag with a valid level, and `AI_DISCLOSURE.md` exists |

@@ -12,7 +12,7 @@ Graphics for the Raspberry Pi Pico 2 and small SPI screens, in the spirit of Qui
 qg4p/            the library: copy this folder into your project
   qg4p.h         the one header a program includes
   assets/        the asset pack reader (optional, separate library)
-examples/        14 example programs, each its own build target (wiring: examples/board.h)
+examples/        16 example programs, each its own build target (wiring: examples/board.h)
 tests/
   hardware/      the test programs used to develop the library, one per milestone
   host/          tests that run on a PC, no Pico needed
