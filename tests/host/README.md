@@ -17,6 +17,7 @@ Needs gcc, Python 3, Pillow and numpy. Each check prints PASS or FAIL; logs are 
 | images_rle_delta | RLE8 delta codes match the BMP specification (checked by hand: Pillow has a bug here) |
 | asset_pack | Lookups, alignment, checksum, damage handling |
 | buf8_* | Framebuffer screens draw exactly what direct screens do; flushes send only what changed; flood fill; scrolling; images; overlapping sprites |
+| flash | The photosensitivity-safer flash, with simulated time: never more than 4 opposing brightness changes (2 flashes) touching any one-second window, even when 10 a second are asked for, with fast, slow and erratic loops, and through a minute of back-to-back cancels and restarts; no step over `QG_FLASH_MAX_STEP`; saturated red refused (checked against all 65,536 RGB565 colours); ends by itself after 5; brightness, pixels and palette restored exactly, on DIRECT and framebuffer screens |
 | render_pages | Every page of every hardware test program renders with nothing drawn off-screen |
 | render_examples | All 16 examples run unchanged against stand-in screens (`render_example.c`), each stopped at a representative moment (the dice roller also mid-roll, where leftover dice would show), with nothing drawn off-screen |
 | manual_examples | Every example in the manual (`docs/manual`) compiles, and runs without drawing off the screen. `python3 tests/host/doc_examples.py` (without `--check`) also refreshes the manual's pictures |

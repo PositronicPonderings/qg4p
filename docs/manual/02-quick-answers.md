@@ -65,6 +65,7 @@ Find your question; follow the link. (Just want every function on one page? [Too
 | wire a screen? two? | [Getting started](07-getting-started.md#wiring) |
 | pick which pins to use? | [choosing pins](07-getting-started.md#choosing-pins) |
 | dim the backlight? | [`qg_screen_set_brightness`](reference/screens.md#qg_screen_set_brightness) |
+| flash the screen for attention, without the seizure risk of a hard blink? | the [photosensitivity-safer flash](reference/flash.md): [`qg_flash_start`](reference/flash.md#qg_flash_start), then [`qg_flash_update`](reference/flash.md#qg_flash_update) every loop |
 | run two screens? | set up one bus and two screens: [screens](reference/screens.md), the [two_screens example](03-examples.md#6-two-screens) |
 | use a screen QG4P doesn't support? | [Part 8](08-new-chip.md) |
 | find out how much memory my program uses? | [`size_report.py`](05-tools.md#size_reportpy), [`size_audit.py`](05-tools.md#size_auditpy) |

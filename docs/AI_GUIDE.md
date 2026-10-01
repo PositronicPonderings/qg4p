@@ -34,7 +34,7 @@ qg4p/            library (CMake targets: qg4p; qg4p_assets for the asset pack)
   qg_config.h    compile-time settings
 examples/        16 examples, each its own target qg4p_<name>; wiring in examples/board.h
 tests/hardware/  milestone test programs qg4p_m0..m8, qg4p_new_commands
-tests/host/      PC tests: sh tests/host/run_tests.sh  (17 checks, gcc + python3 + Pillow + numpy)
+tests/host/      PC tests: sh tests/host/run_tests.sh  (18 checks, gcc + python3 + Pillow + numpy)
 tools/           ttf2qg.py, img2bmp8.py, mkpack.py, size_report.py, size_audit.py
 docs/manual/     the manual
 ```
@@ -127,6 +127,8 @@ Check every `qg_err_t` in real code (`QG_OK` = 0). `qg_bus_t`, `qg_screen_t`, fo
 **PAINT**: `border` colour stops the fill; `QG_DEFAULT` = bucket fill of the start colour. 4-connected; a 1-px gap leaks. Returns `QG_ERR_OVERFLOW` if the work list (`QG_PAINT_STACK` 1024) runs out.
 
 **Asset pack**: built by `tools/mkpack.py folder --out build/assets` (PNG/JPG/GIF→.bmp, names keep folders with `/`, ≤35 chars), loaded at flash offset 1 MB (`QG_ASSET_PACK_OFFSET`). `qg_asset_init()` once; `qg_asset_find(name,&a)` (~1 µs) gives `a.data`, `a.size`, `a.type`, `a.flags` (`QG_ASSET_FLAG_TRANSPARENT` → open image with `QG_IMAGE_TRANSPARENT`). Files are not NUL-terminated. Handle a missing pack gracefully.
+
+**Flash** (`#include "qg_flash.h"`, not in qg4p.h; linked only if called): the photosensitivity-*safer* way to get attention (never call it "safe"; devices should also offer a setting to turn flashing off). Dims the backlight along a raised cosine and back; no pixel touched, so DIRECT and BUF8 alike; needs `bl_pin`. Non-blocking: `qg_flash_start(&f, s, cfg_or_NULL, now_ms)`, then `qg_flash_update(&f, now_ms)` every loop (returns false when done, brightness restored exactly). Enforced whatever is asked (clamped, never an error): ≤ 2 flashes in any 1 s (rule: a dip starts ≥ 1000 ms after the dip two before ended), period 800–4000 ms, ≤ 5 flashes per start, steps ≤ 12 points, default depth 50 %. Saturated red (R/(R+G+B) ≥ 0.8) in the screen's fg, bg or `cfg.color` → `QG_ERR_ARG`. `qg_flash_t` is caller-owned: static, zeroed, one per screen, reused (it remembers its last dips). `qg_flash_cancel(&f, now_ms, false)` eases back; `true` restores at once. Changing brightness mid-flash makes it stop and leave yours.
 
 **Colour adjustment** (per-panel calibration): `qg_screen_set_color_adjust(s, &adj, &state)`; `adj = { .gain = {r,g,b percent 0..100}, .gamma = {r,g,b x100, 50..300} }`; `state` is a caller-owned `qg_color_adjust_state_t` (1,290 B) kept while active; `NULL` adj = off. Applied only to what's sent; no per-pixel cost. DIRECT: redraw after setting.
 
@@ -232,6 +234,14 @@ void qg_palette_reset(qg_screen_t *s);
 qg_err_t qg_screen_set_color_adjust(qg_screen_t *s, const qg_color_adjust_t *adj, qg_color_adjust_state_t *state);
 int qg_color_from_name(const char *name, size_t len);
 ```
+### Flash (qg_flash.h)
+```c
+qg_err_t qg_flash_start(qg_flash_t *f, qg_screen_t *scr, const qg_flash_config_t *cfg, uint32_t now_ms);
+bool qg_flash_update(qg_flash_t *f, uint32_t now_ms);
+void qg_flash_cancel(qg_flash_t *f, uint32_t now_ms, bool at_once);
+bool qg_flash_active(const qg_flash_t *f);
+bool qg_flash_is_saturated_red(const qg_screen_t *scr, qg_color_t color);
+```
 ### Assets (qg_asset.h, link qg4p_assets)
 ```c
 qg_asset_err_t qg_asset_init(void);
@@ -254,6 +264,7 @@ Hardware layer (`qg_hal_*`, `qg_driver_*`) is for driver authors only.
 - `qg_bus_config_t`: `spi, sck_pin, mosi_pin, dc_pin, rst_pin, cs_pins, cs_count`. SCK/MOSI rule: GPIO n is SPI (n/8)%2; SCK if n%4==2, MOSI if n%4==3 (spi0 SCK 2/6/18/22, MOSI 3/7/19; spi1 SCK 10/14/26, MOSI 11/15/27); `qg_bus_init` rejects mismatches.
 - `qg_screen_config_t`: `driver, cs_pin, bl_pin, bl_active_high, spi_hz, width, height, x_offset, y_offset, invert, bgr, mirror_x, mirror_y, rotation, backend, framebuffer, framebuffer_size, text_history, text_history_lines`.
 - `qg_asset_t`: `name, data, size, type, flags`.
+- `qg_flash_config_t`: `period_ms` (0 = 1000), `count` (0 = 3), `depth` (% of current brightness to dim by, 0 = 50), `color` (QG_DEFAULT = none). Limits (not settings): `QG_FLASH_MIN_PERIOD_MS` 800, `QG_FLASH_MAX_PERIOD_MS` 4000, `QG_FLASH_MAX_COUNT` 5, `QG_FLASH_MAX_STEP` 12, `QG_FLASH_MAX_TICK_MS` 20, `QG_FLASH_WINDOW_MS` 1000.
 - Settings (`qg_config.h`, override on target `qg4p` PUBLIC): `QG_TEXT_CELL_PIXELS` 2048 (0 removes opaque-text fast path), `QG_PAINT_STACK` 1024, `QG_IMAGE_MAX_WIDTH` 480, `QG_IMAGE_BLOCK_PIXELS` 2048, `QG_BUF8_CHUNK_PIXELS` 1024, `QG_TAB_WIDTH` 40, `QG_MAX_FONTS` 4, `QG_TEXT_HISTORY_CHARS` 120, `QG_BUS_BOOT_HZ` 1 MHz, `QG_BL_PWM_HZ` 10 kHz.
 
 ## 8. Memory and speed (measured, Pico 2, 37.5 MHz)

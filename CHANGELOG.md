@@ -1,5 +1,12 @@
 # Changelog
 
+## Unreleased
+
+### Added
+- **Photosensitivity-safer flash** (`qg_flash.h`, `qg_flash.c`): `qg_flash_start()`, `qg_flash_update()`, `qg_flash_cancel()`, `qg_flash_active()`, `qg_flash_is_saturated_red()`. Draws attention by dimming the backlight smoothly (raised-cosine) and back, designed to stay within WCAG 2.3.1: at most 2 flashes in any second whatever is asked for (one rule, checked before every dip, that holds across cancels and restarts), at most 5 flashes per start, no step larger than 12 percentage points, half depth by default, and screens with a saturated-red foreground, background or highlight colour refused with `QG_ERR_ARG`. Never blocks (start/update), cancellable smoothly or at once, restores the brightness exactly, and touches no pixel, so it works the same on DIRECT and framebuffer screens. Its own header (not in `qg4p.h`), linked only if used; all state is in a caller-owned `qg_flash_t`. "Safer", not "safe": devices should also offer a setting to turn flashing off.
+- `tests/host/test_flash.c` (check `flash` in `run_tests.sh`, now 18 checks): simulated-time tests of the rate cap in every one-second window (fast, slow and erratic loops; 10 flashes a second requested; a minute of back-to-back cancels and restarts), step size, the red check against all 65,536 RGB565 colours, self-ending, and exact restoration after cancelling.
+- Manual: a reference page for the flash (`docs/manual/reference/flash.md`), a quick-reference section and a quick answer.
+
 ## 1.0.1 (2026-10-01)
 
 ### Fixed

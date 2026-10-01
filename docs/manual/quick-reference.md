@@ -155,6 +155,20 @@ qg_asset_init_at(address)              → asset err
 
 Make a pack: `python3 tools/mkpack.py folder --out build/assets`, then drag `build/assets.uf2` onto the Pico. Link `qg4p_assets`.
 
+## Flash (photosensitivity-safer)
+
+```c
+#include "qg_flash.h"                          /* not in qg4p.h; linked only if used */
+static qg_flash_t fl;                          /* yours: static (zeroed), one per screen */
+qg_flash_start(&fl, scr, NULL, now_ms)         → err   /* NULL: 3 flashes, 1 a second, to 50 % */
+qg_flash_config_t c = { .period_ms, .count, .depth, .color };   /* 0 = default; all clamped */
+qg_flash_update(&fl, now_ms)                   → running?   /* every loop; never blocks */
+qg_flash_cancel(&fl, now_ms, at_once)          /* false = ease back smoothly */
+qg_flash_active(&fl)   qg_flash_is_saturated_red(scr, color)
+```
+
+Dims the backlight smoothly and back; no pixel touched, DIRECT or framebuffer. Whatever you ask for: at most 2 flashes a second, 5 per start, no step over `QG_FLASH_MAX_STEP`. A saturated-red foreground, background or `.color` gets `QG_ERR_ARG`. *Safer*, not safe: offer a setting that turns flashing off. [Details](reference/flash.md).
+
 ## The eight things that bite
 
 1. **Text needs a font in slot 0.** No font, no text, no error.

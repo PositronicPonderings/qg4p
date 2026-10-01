@@ -6,7 +6,8 @@
 #  QG4P - QuickGraphics 4 Pico
 #
 #  Two libraries:
-#    qg4p          the graphics library (screens, drawing, text, images)
+#    qg4p          the graphics library (screens, drawing, text, images,
+#                  and the optional photosensitivity-safer flash, qg_flash.h)
 #    qg4p_assets   the asset pack reader (optional; independent of qg4p)
 #
 #  In your project's CMakeLists.txt:
@@ -22,6 +23,7 @@ add_library(qg4p STATIC
     qg_block.c
     qg_text.c
     qg_image.c
+    qg_flash.c
     fonts/qg_font_mono_12.c
     fonts/qg_font_sans_16.c
     fonts/qg_font_sans_bold_24.c

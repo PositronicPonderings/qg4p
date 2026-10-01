@@ -19,7 +19,7 @@ import sys
 ROOT = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", ".."))
 LIB = os.path.join(ROOT, "qg4p")
 HEADERS = ["qg_screen.h", "qg_draw.h", "qg_draw_pct.h", "qg_block.h", "qg_text.h", "qg_image.h",
-           "qg_palette.h", "qg_types.h", "qg_config.h", "hal/qg_hal.h", "assets/qg_asset.h",
+           "qg_palette.h", "qg_types.h", "qg_config.h", "hal/qg_hal.h", "assets/qg_asset.h", "qg_flash.h",
            "fonts/qg_font_mono_12.c", "fonts/qg_font_sans_16.c", "fonts/qg_font_sans_bold_24.c"]
 
 public, known = set(), set()

@@ -18,6 +18,7 @@
 #include "qg4p.h"
 #include "qg_internal.h"
 #include "qg_asset.h"
+#include "qg_flash.h"
 #include "example_art.h"
 
 #define W 240

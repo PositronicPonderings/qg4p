@@ -42,6 +42,7 @@ build test_buf8_a       test_buf8_a.c $BASE $BUF8
 build test_buf8_b       test_buf8_b.c $BASE $BUF8 $H/demo_images.c
 build test_buf8_overlap test_buf8_overlap.c $BASE $BUF8 $H/demo_images.c
 build test_new_commands test_new_commands.c $BASE $BUF8 $H/demo_images.c
+build test_flash        test_flash.c $L/qg_flash.c $L/qg_palette.c
 build render_m2         render_m2.c screenstub.c $BASE
 build render_m3         render_m3.c $BASE
 build render_m4         render_m4.c $BASE
@@ -83,6 +84,7 @@ check buf8_equivalence  ./test_buf8_a
 check buf8_scroll_image ./test_buf8_b
 check buf8_overlap      ./test_buf8_overlap
 check new_commands      ./test_new_commands
+check flash             ./test_flash
 check render_pages      sh -c 'rm -f *.ppm; for r in render_m2 render_m3 render_m4 render_m5 render_m6 render_m7 render_m8 render_new; do ./$r || exit 1; done'
 check render_examples   sh -c 'cd ex && rm -f *.ppm && for ex in '"$EX"'; do n=${ex%%:*}; ./r_$n ${ex##*:} $n || exit 1; done && NOPACK=1 ./r_asset_pack 1 asset_pack_nopack && ./r_layout 2 layout_sideways && ./r_dice_roller 75 dice_roller_midroll && ./r_colour_check 2 colour_check_diagnostics && QG_KEYS="b++++++++[[[[" ./r_calibrate 1 calibrate_adjusted'
 check golden_images     sh -c 'sha256sum -c ../golden.sha256 --quiet'
